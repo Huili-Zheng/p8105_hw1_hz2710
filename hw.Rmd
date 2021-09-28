@@ -9,6 +9,8 @@ output: github_document
 
 ```{r, echo = FALSE, message = FALSE}
 library(tidyverse)
+library(explore)
+library(ggplot2)
 ```
 
 ## Problem 1
@@ -28,25 +30,45 @@ Try to take the mean of each variable in your data frame. What works and what do
 ```{r}
  a = c(rnorm(10, mean = 0, sd = 1))
  b = a > 0
- c = vector("character", length = 10)
+ c = c("Hello",",","This","is","Huili","Zheng",".","Thank","you","!")
  d = factor(c("low", "high", "medium", "high", "low", "medium", "high",  "low", "medium", "high"))
  
- answer1.data <- data.frame(a, b, c, d)
+ answer1 <- tibble(a, b, c, d)
  
  mean(pull(answer1, a))
  mean(pull(answer1, b))
  mean(pull(answer1, c))
  mean(pull(answer1, d))
 ```
-The character and the factor vector don't have mean. They are not numerical or logical argument.
+We can't take the mean of the character and the factor vector. They are not numerical or logical argument.
 
 In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). What happens, and why? Does this help explain what happens when you try to take the mean?
 
-```{r, results='hide'}
+```{r, results='hide', warning=FALSE}
 as.numeric(pull(answer1, b))
 as.numeric(pull(answer1, c))
 as.numeric(pull(answer1, d))
 ```
-When we take the mean, we are manipulating the numerical value. The logical variable can be transformed directly to 0 or 1. The character and factor variable need to be converted to numerical value then being taken the mean.
+When we take the mean, we are manipulating the numerical value. The logical variable can be transformed directly to 0 or 1. The factor variable needs to be converted to numerical value then being taken the mean. But the character can't.
 
 ## Problem 2
+Write a short description of the penguins dataset (not the penguins_raw dataset) using inline R code, including:
+
+a) the data in this dataset, including names / values of important variables
+b) the size of the dataset (using nrow and ncol)
+c) the mean flipper length
+d) Make a scatterplot of flipper_length_mm (y) vs bill_length_mm (x); color points using the species variable (adding color = ... inside of aes in your ggplot code should help).
+
+Export your first scatterplot to your project directory using ggsave.
+
+```{r}
+data("penguins", package = "palmerpenguins")
+describe(penguins)
+names(penguins)
+size_sum(penguins)
+data <- penguins %>% filter(flipper_length_mm > 0)
+mean(pull(data,flipper_length_mm))
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("scatterplot with bill_length_mm and flipper_length_mm.jpg")
+```
+The dataset about penguins has 344 rows and 8 columns, including of species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex, year. There are missing values on species, island, sex. The mean of flipper length is 200.9152 mm.
