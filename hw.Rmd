@@ -1,0 +1,52 @@
+---
+title: "homework 1"
+author: "Huili Zheng"
+date: "9/26/2021"
+output: github_document
+---
+
+
+
+```{r, echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+## Problem 1
+
+Create a data frame comprised of:
+
+a) a random sample of size 10 from a standard Normal distribution
+
+b) a logical vector indicating whether elements of the sample are greater than 0
+
+c) a character vector of length 10
+
+d) a factor vector of length 10, with 3 different factor “levels”
+
+Try to take the mean of each variable in your data frame. What works and what doesn’t?
+
+```{r}
+ a = c(rnorm(10, mean = 0, sd = 1))
+ b = a > 0
+ c = vector("character", length = 10)
+ d = factor(c("low", "high", "medium", "high", "low", "medium", "high",  "low", "medium", "high"))
+ 
+ answer1.data <- data.frame(a, b, c, d)
+ 
+ mean(pull(answer1, a))
+ mean(pull(answer1, b))
+ mean(pull(answer1, c))
+ mean(pull(answer1, d))
+```
+The character and the factor vector don't have mean. They are not numerical or logical argument.
+
+In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). What happens, and why? Does this help explain what happens when you try to take the mean?
+
+```{r, results='hide'}
+as.numeric(pull(answer1, b))
+as.numeric(pull(answer1, c))
+as.numeric(pull(answer1, d))
+```
+When we take the mean, we are manipulating the numerical value. The logical variable can be transformed directly to 0 or 1. The character and factor variable need to be converted to numerical value then being taken the mean.
+
+## Problem 2
